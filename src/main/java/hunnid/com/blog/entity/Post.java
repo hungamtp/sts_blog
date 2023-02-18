@@ -22,6 +22,7 @@ import java.util.UUID;
 @Getter
 @SuperBuilder
 @Table(
+    name = "post",
     uniqueConstraints = {},
     indexes = {
         @Index(name = "fn_index_hidden", columnList = "hidden"),

@@ -15,6 +15,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @SuperBuilder
+@Table(name = "translation_string_type")
 public class TranslationStringType {
     @Id
     @GeneratedValue(generator = "uuid2")

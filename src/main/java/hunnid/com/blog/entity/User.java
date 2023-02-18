@@ -16,6 +16,7 @@ import java.util.UUID;
 @Getter
 @SuperBuilder
 @Table(
+    name = "user",
     uniqueConstraints = {@UniqueConstraint(name = "unique_email", columnNames = {"email"})},
     indexes = {
         @Index(name = "fn_index_email", columnList = "email")

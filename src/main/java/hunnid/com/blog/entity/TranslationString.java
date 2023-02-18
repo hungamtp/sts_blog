@@ -16,6 +16,7 @@ import java.util.UUID;
 @Getter
 @SuperBuilder
 @Table(
+    name = "translation_string",
     uniqueConstraints = {},
     indexes = {
         @Index(name = "fk_index_language_id", columnList = "language_id"),

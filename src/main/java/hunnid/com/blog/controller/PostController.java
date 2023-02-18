@@ -25,8 +25,8 @@ public class PostController {
         @ApiResponse(responseCode = "200", description = "found the foo", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = Post.class))}),
         @ApiResponse(responseCode = "400", description = "Invalid id supplied", content = @Content),
-        @ApiResponse(responseCode = "404", description = "Foo not found", content = @Content) })
-    public String demo(){
+        @ApiResponse(responseCode = "404", description = "Foo not found", content = @Content)})
+    public String demo() {
         return "hello";
     }
 }
