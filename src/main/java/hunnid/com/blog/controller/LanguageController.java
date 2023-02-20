@@ -3,6 +3,7 @@ package hunnid.com.blog.controller;
 import hunnid.com.blog.dto.response.LanguageDTO;
 import hunnid.com.blog.entity.Language;
 import hunnid.com.blog.repository.LanguageRepository;
+import hunnid.com.blog.service.LanguageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,17 +17,10 @@ import java.util.stream.Collectors;
 @RequestMapping("/languages")
 @RequiredArgsConstructor
 public class LanguageController {
-    private final LanguageRepository languageRepository;
+    private final LanguageService languageService;
 
     @GetMapping
     public ResponseEntity<List<LanguageDTO>> getLanguages() {
-        return ResponseEntity.ok().body(languageRepository.findAll()
-            .stream()
-            .map(language ->
-                LanguageDTO.builder()
-                    .id(language.getId())
-                    .language(language.getName())
-                    .build())
-            .collect(Collectors.toList()));
+        return ResponseEntity.ok().body(languageService.getLanguages());
     }
 }

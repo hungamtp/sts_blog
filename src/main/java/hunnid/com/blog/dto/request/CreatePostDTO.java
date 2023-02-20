@@ -1,11 +1,11 @@
 package hunnid.com.blog.dto.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
 
+import lombok.*;
+
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -13,9 +13,6 @@ import java.util.UUID;
 @Builder
 public class CreatePostDTO {
     private String coverImage;
-    private Map<UUID , PostContent> languageMapContent ;
-    public class PostContent{
-        private String content;
-        private String title;
-    }
+    private Set<UUID> tagIds;
+    private Map<UUID, List<PostContent>> contentMapByLanguageId;
 }

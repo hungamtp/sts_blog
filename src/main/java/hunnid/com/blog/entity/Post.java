@@ -1,25 +1,24 @@
 package hunnid.com.blog.entity;
 
 import hunnid.com.blog.util.DateUtils;
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
-
+import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
+
+
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Setter
 @SuperBuilder
 @Table(
     name = "post",
@@ -31,17 +30,23 @@ public class Post {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @Column(updatable = false, nullable = false, columnDefinition = "VARCHAR(36)")
+    @Column(updatable = false, nullable = false, columnDefinition = "varchar(36)")
+    @Type(type = "uuid-char")
     private UUID id;
     private boolean hidden;
     private String coverImage;
     private LocalDateTime createdAt;
-    @ManyToMany
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id", referencedColumnName = "id")
+    private Set<TranslationString> translatedStrings;
+
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
         name = "post_tag",
         joinColumns = @JoinColumn(name = "post_id"),
         inverseJoinColumns = @JoinColumn(name = "tag_id"))
-    private List<Tag> tags;
+    private Set<Tag> tags;
 
     @PrePersist
     public void defaultValue() {
