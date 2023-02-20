@@ -47,7 +47,7 @@ CREATE TABLE translation_string_type
     CONSTRAINT pk_translation_string_type PRIMARY KEY (id)
 );
 
-CREATE TABLE TranslationString
+CREATE TABLE translation_string
 (
     id               VARCHAR(36)  NOT NULL,
     translatedString VARCHAR(255) NULL,
@@ -57,17 +57,17 @@ CREATE TABLE TranslationString
     CONSTRAINT pk_translationstring PRIMARY KEY (id)
 );
 
-ALTER TABLE TranslationString
-    ADD CONSTRAINT FK_TRANSLATIONSTRING_ON_LANGUAGE FOREIGN KEY (language_id) REFERENCES Language (id);
+ALTER TABLE translation_string
+    ADD CONSTRAINT FK_TRANSLATIONSTRING_ON_LANGUAGE FOREIGN KEY (language_id) REFERENCES language (id);
 
-CREATE INDEX fk_index_language_id ON TranslationString (language_id);
+CREATE INDEX fk_index_language_id ON translation_string (language_id);
 
-ALTER TABLE TranslationString
-    ADD CONSTRAINT FK_TRANSLATIONSTRING_ON_POST FOREIGN KEY (post_id) REFERENCES Post (id);
+ALTER TABLE translation_string
+    ADD CONSTRAINT FK_TRANSLATIONSTRING_ON_POST FOREIGN KEY (post_id) REFERENCES post (id);
 
-CREATE INDEX fk_index_post_id ON TranslationString (post_id);
+CREATE INDEX fk_index_post_id ON translation_string (post_id);
 
-ALTER TABLE TranslationString
-    ADD CONSTRAINT FK_TRANSLATIONSTRING_ON_TYPE FOREIGN KEY (type_id) REFERENCES TranslationStringType (id);
+ALTER TABLE translation_string
+    ADD CONSTRAINT FK_TRANSLATIONSTRING_ON_TYPE FOREIGN KEY (type_id) REFERENCES translation_string_type (id);
 
-CREATE INDEX fk_index_type_id ON TranslationString (type_id);
+CREATE INDEX fk_index_type_id ON translation_string (type_id);
