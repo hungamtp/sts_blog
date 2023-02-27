@@ -1,6 +1,9 @@
 package hunnid.com.blog.service.impl;
 
+import hunnid.com.blog.constraint.EntityNameConstraint;
+import hunnid.com.blog.constraint.ErrorMessageConstraint;
 import hunnid.com.blog.dto.request.CreatePostDTO;
+import hunnid.com.blog.dto.request.HideOrShowRequestDTO;
 import hunnid.com.blog.dto.request.PostContent;
 import hunnid.com.blog.dto.response.PostContentResponseDTO;
 import hunnid.com.blog.dto.response.PostResponseDTO;
@@ -10,6 +13,7 @@ import hunnid.com.blog.entity.Post;
 import hunnid.com.blog.entity.TranslationString;
 import hunnid.com.blog.entity.TranslationStringType;
 import hunnid.com.blog.enums.TranslationStringTypeEnum;
+import hunnid.com.blog.exceptionHandler.exception.NotFoundException;
 import hunnid.com.blog.repository.LanguageRepository;
 import hunnid.com.blog.repository.PostRepository;
 import hunnid.com.blog.service.LanguageService;
@@ -68,5 +72,25 @@ public class PostServiceImpl implements PostService {
                 .hidden(newPost.isHidden())
                 .tags(newPost.getTags().stream().map(tag -> TagDTO.builder().id(tag.getId()).tag(tag.getTag()).build()).collect(toSet()))
                 .build();
+    }
+
+    @Override
+    public PostResponseDTO update(CreatePostDTO request) {
+        return null;
+    }
+
+    @Override
+    public Boolean hideOrShowPost(HideOrShowRequestDTO request) {
+        Post post = findByIdOrElseThrow(request.getPostId());
+        post.setHidden(request.getHidden());
+        postRepository.save(post);
+        return Boolean.TRUE;
+    }
+
+    @Override
+    public Post findByIdOrElseThrow(UUID postId) {
+        return postRepository.findById(postId).orElseThrow(
+                () -> new NotFoundException(EntityNameConstraint.POST, String.format(ErrorMessageConstraint.NOT_FOUND, postId))
+        );
     }
 }

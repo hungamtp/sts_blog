@@ -1,6 +1,7 @@
 package hunnid.com.blog.controller;
 
 import hunnid.com.blog.dto.request.CreatePostDTO;
+import hunnid.com.blog.dto.request.HideOrShowRequestDTO;
 import hunnid.com.blog.dto.response.PostResponseDTO;
 import hunnid.com.blog.entity.Post;
 import hunnid.com.blog.service.PostService;
@@ -16,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/posts")
@@ -39,5 +41,10 @@ public class PostController {
     @PostMapping
     public ResponseEntity<PostResponseDTO> createPost(@Valid @RequestBody CreatePostDTO request) {
         return ResponseEntity.ok().body(postService.save(request));
+    }
+    
+    @PatchMapping()
+    public  ResponseEntity<Boolean> hideOtShowPost(@RequestBody HideOrShowRequestDTO request){
+        return ResponseEntity.ok().body(postService.hideOrShowPost(request));
     }
 }
