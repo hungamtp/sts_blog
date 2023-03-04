@@ -26,11 +26,7 @@ public class TagServiceImpl implements TagService {
     public List<TagDTO> getTags() {
         return tagRepository.findAll()
                 .stream()
-                .map(tag ->
-                        TagDTO.builder()
-                                .id(tag.getId())
-                                .tag(tag.getTag())
-                                .build())
+                .map(TagDTO::entityToDTO)
                 .collect(Collectors.toList());
     }
 

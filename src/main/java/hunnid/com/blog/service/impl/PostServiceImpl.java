@@ -4,23 +4,23 @@ import hunnid.com.blog.constraint.EntityNameConstraint;
 import hunnid.com.blog.constraint.ErrorMessageConstraint;
 import hunnid.com.blog.dto.request.CreatePostDTO;
 import hunnid.com.blog.dto.request.HideOrShowRequestDTO;
-import hunnid.com.blog.dto.request.PostContent;
-import hunnid.com.blog.dto.response.PostContentResponseDTO;
+import hunnid.com.blog.dto.response.PageDTO;
 import hunnid.com.blog.dto.response.PostResponseDTO;
+import hunnid.com.blog.dto.response.SavedPostResponseDTO;
 import hunnid.com.blog.dto.response.TagDTO;
-import hunnid.com.blog.entity.Language;
-import hunnid.com.blog.entity.Post;
-import hunnid.com.blog.entity.TranslationString;
-import hunnid.com.blog.entity.TranslationStringType;
+import hunnid.com.blog.entity.*;
 import hunnid.com.blog.enums.TranslationStringTypeEnum;
 import hunnid.com.blog.exceptionHandler.exception.NotFoundException;
-import hunnid.com.blog.repository.LanguageRepository;
 import hunnid.com.blog.repository.PostRepository;
 import hunnid.com.blog.service.LanguageService;
 import hunnid.com.blog.service.PostService;
 import hunnid.com.blog.service.TagService;
 import hunnid.com.blog.service.TranslationStringTypeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -37,7 +37,7 @@ public class PostServiceImpl implements PostService {
     private final TagService tagService;
 
     @Override
-    public PostResponseDTO save(CreatePostDTO request) {
+    public SavedPostResponseDTO save(CreatePostDTO request) {
         Post newPost = Post.builder()
                 .coverImage(request.getCoverImage())
                 .hidden(true)
@@ -59,7 +59,7 @@ public class PostServiceImpl implements PostService {
         newPost.setTags(tagService.findByIdInOrElseThrow(request.getTagIds()));
         postRepository.save(newPost);
 
-        return PostResponseDTO.builder()
+        return SavedPostResponseDTO.builder()
                 .id(newPost.getId())
                 .coverImage(newPost.getCoverImage())
                 .titles(newPost.getTranslatedStrings().stream()
@@ -75,7 +75,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostResponseDTO update(CreatePostDTO request) {
+    public SavedPostResponseDTO update(CreatePostDTO request) {
         return null;
     }
 
@@ -92,5 +92,20 @@ public class PostServiceImpl implements PostService {
         return postRepository.findById(postId).orElseThrow(
                 () -> new NotFoundException(EntityNameConstraint.POST, String.format(ErrorMessageConstraint.NOT_FOUND, postId))
         );
+    }
+
+    @Override
+    public PageDTO<PostResponseDTO> postsHomePage(int page, int size, UUID languageId) {
+        Pageable pageable = PageRequest.of(page, size).withSort(Sort.by(Post_.CREATED_AT).descending());
+        Page<Post> posts = postRepository.findAllByHiddenFalse(pageable);
+
+        return PageDTO.<PostResponseDTO>builder()
+                .data(posts.get().map(p -> PostResponseDTO.entityToDTO(p, languageId)).collect(toList()))
+                .page(page)
+                .size(size)
+                .totalResults((int) posts.getTotalElements())
+                .totalPages(posts.getTotalPages())
+                .actualResult(posts.getNumberOfElements())
+                .build();
     }
 }

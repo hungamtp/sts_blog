@@ -8,6 +8,7 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -48,10 +49,14 @@ public class Post {
         inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Set<Tag> tags;
 
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id" , referencedColumnName = "id")
+    private List<ViewPost> views;
+    
     @PrePersist
     public void defaultValue() {
         if (Objects.isNull(createdAt)) {
-            createdAt = DateUtils.getLocalDateTimeByTimeZone();
+            createdAt = DateUtils.getLocalDateTimeByTimeZone(DateUtils.TIME_ZONE_HCM);
         }
     }
 

@@ -13,10 +13,10 @@ import java.util.Objects;
 @Slf4j
 public class DateUtils {
 
-    public static final String TIME_ZONE = "Asia/Ho_Chi_Minh";
+    public static final String TIME_ZONE_HCM = "Asia/Ho_Chi_Minh";
 
-    public static LocalDateTime getLocalDateTimeByTimeZone(){
-        ZonedDateTime dateTime = ZonedDateTime.now(ZoneId.of(TIME_ZONE));
+    public static LocalDateTime getLocalDateTimeByTimeZone(String timeZone) {
+        ZonedDateTime dateTime = ZonedDateTime.now(ZoneId.of(timeZone));
         return dateTime.toLocalDateTime();
     }
 
