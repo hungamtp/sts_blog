@@ -41,6 +41,7 @@ public class TranslationString {
     private UUID id;
     
     @FullTextField
+    @Type(type="text")
     private String translatedString;
 
     @ManyToOne(fetch = FetchType.LAZY)
