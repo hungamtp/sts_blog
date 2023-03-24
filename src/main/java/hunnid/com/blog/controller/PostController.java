@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -51,7 +52,12 @@ public class PostController {
     @GetMapping
     public ResponseEntity getPosts(@RequestParam Integer size,
                                    @RequestParam Integer page,
-                                   @RequestParam UUID languageId) {
-        return ResponseEntity.ok().body(postService.postsHomePage(page, size, languageId));
+                                   @RequestParam String language,
+                                   @RequestParam(required = false) List<UUID> tagIds) {
+        return ResponseEntity.ok().body(postService.postsHomePage(page, size, language,tagIds));
+    }
+    @GetMapping("/{postId}")
+    public ResponseEntity getPostDetail(@PathVariable UUID postId){
+        return ResponseEntity.ok().body("postService.postsHomePage(page, size, languageId)");
     }
 }

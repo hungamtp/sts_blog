@@ -25,13 +25,13 @@ public class PostResponseDTO {
     private int viewCount;
     private List<TagDTO> tags;
 
-    public static PostResponseDTO entityToDTO(Post post, UUID languageId) {
+    public static PostResponseDTO entityToDTO(Post post, String language) {
         List<String> titles = post.getTranslatedStrings().stream()
-                .filter(t -> Objects.equals(t.getLanguage().getId(), languageId) && t.getType().getType().equals(TranslationStringTypeEnum.POST_TITLE))
+                .filter(t -> Objects.equals(t.getLanguage().getName(), language) && t.getType().getType().equals(TranslationStringTypeEnum.POST_TITLE))
                 .map(TranslationString::getTranslatedString)
                 .toList();
         List<String> contents = post.getTranslatedStrings().stream()
-                .filter(t -> Objects.equals(t.getLanguage().getId(), languageId) && t.getType().getType().equals(TranslationStringTypeEnum.POST_CONTENT))
+                .filter(t -> Objects.equals(t.getLanguage().getName(), language) && t.getType().getType().equals(TranslationStringTypeEnum.POST_CONTENT))
                 .map(TranslationString::getTranslatedString)
                 .toList();
         String title = null;
