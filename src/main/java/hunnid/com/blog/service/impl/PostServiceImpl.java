@@ -4,14 +4,12 @@ import hunnid.com.blog.constraint.EntityNameConstraint;
 import hunnid.com.blog.constraint.ErrorMessageConstraint;
 import hunnid.com.blog.dto.request.CreatePostDTO;
 import hunnid.com.blog.dto.request.HideOrShowRequestDTO;
-import hunnid.com.blog.dto.response.PageDTO;
-import hunnid.com.blog.dto.response.PostResponseDTO;
-import hunnid.com.blog.dto.response.SavedPostResponseDTO;
-import hunnid.com.blog.dto.response.TagDTO;
+import hunnid.com.blog.dto.response.*;
 import hunnid.com.blog.entity.*;
 import hunnid.com.blog.enums.TranslationStringTypeEnum;
 import hunnid.com.blog.exceptionHandler.exception.NotFoundException;
 import hunnid.com.blog.repository.PostRepository;
+import hunnid.com.blog.repository.TranslationStringTypeRepository;
 import hunnid.com.blog.service.LanguageService;
 import hunnid.com.blog.service.PostService;
 import hunnid.com.blog.service.TagService;
@@ -23,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -35,6 +34,8 @@ public class PostServiceImpl implements PostService {
     private final LanguageService languageService;
     private final TranslationStringTypeService translationStringTypeService;
     private final TagService tagService;
+    private final EntityManager entityManager;
+    private final TranslationStringTypeRepository translationStringTypeRepository;
 
     @Override
     public SavedPostResponseDTO save(CreatePostDTO request) {
@@ -46,17 +47,19 @@ public class PostServiceImpl implements PostService {
         Set<TranslationString> translationStrings = new HashSet<>();
         newPost.setTranslatedStrings(translationStrings);
         request.getContentMapByLanguageId().forEach((key, value) -> {
-            Language language = languageService.findByIdOrThrowException(key);
             value.forEach((translationString) -> {
-                TranslationStringType type = translationStringTypeService.findByIdOrElseThrow(translationString.getContentTypeId());
                 translationStrings.add(TranslationString.builder()
-                        .language(language)
+                        .language(entityManager.getReference(Language.class, key))
                         .translatedString(translationString.getTranslatedString())
-                        .type(type)
+                        .type(entityManager.getReference(TranslationStringType.class, translationString.getContentTypeId()))
                         .build());
             });
         });
-        newPost.setTags(tagService.findByIdInOrElseThrow(request.getTagIds()));
+        List<Tag> tags = new ArrayList<>();
+        request.getTagIds().forEach((value) -> {
+            tags.add(entityManager.getReference(Tag.class , value));
+        });
+        newPost.setTags(tags.stream().collect(toSet()));
         postRepository.save(newPost);
 
         return SavedPostResponseDTO.builder()
@@ -108,5 +111,13 @@ public class PostServiceImpl implements PostService {
                 .totalPages(posts.getTotalPages())
                 .actualResult(posts.getNumberOfElements())
                 .build();
+    }
+
+    @Override
+    public List<TranslationStringTypeResponseDTO> getStringType() {
+        return translationStringTypeRepository.findAll()
+                .stream()
+                .map(TranslationStringTypeResponseDTO::entityToDTO)
+                .collect(toList());
     }
 }

@@ -60,4 +60,9 @@ public class PostController {
     public ResponseEntity getPostDetail(@PathVariable UUID postId){
         return ResponseEntity.ok().body("postService.postsHomePage(page, size, languageId)");
     }
+
+    @GetMapping("/content-type")
+    public ResponseEntity getContentType(){
+        return ResponseEntity.ok().body(postService.getStringType());
+    }
 }
