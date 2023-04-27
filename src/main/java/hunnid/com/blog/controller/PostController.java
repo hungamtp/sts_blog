@@ -65,4 +65,11 @@ public class PostController {
     public ResponseEntity getContentType(){
         return ResponseEntity.ok().body(postService.getStringType());
     }
+    
+    @GetMapping("/manage")
+    public ResponseEntity getPostInAdminPanel(@RequestParam Integer page,
+                                              @RequestParam Integer size,
+                                              @RequestParam String language) {
+        return ResponseEntity.ok().body(postService.getPostsAdminPanel(page, size, language));
+    }
 }

@@ -2,6 +2,7 @@ package hunnid.com.blog.service.impl;
 
 import hunnid.com.blog.constraint.EntityNameConstraint;
 import hunnid.com.blog.constraint.ErrorMessageConstraint;
+import hunnid.com.blog.converter.PostConverter;
 import hunnid.com.blog.dto.request.CreatePostDTO;
 import hunnid.com.blog.dto.request.HideOrShowRequestDTO;
 import hunnid.com.blog.dto.response.*;
@@ -36,6 +37,7 @@ public class PostServiceImpl implements PostService {
     private final TagService tagService;
     private final EntityManager entityManager;
     private final TranslationStringTypeRepository translationStringTypeRepository;
+    private final PostConverter postConverter;
 
     @Override
     public SavedPostResponseDTO save(CreatePostDTO request) {
@@ -121,5 +123,21 @@ public class PostServiceImpl implements PostService {
                 .stream()
                 .map(TranslationStringTypeResponseDTO::entityToDTO)
                 .collect(toList());
+    }
+
+    @Override
+    public PageDTO<AdminPostDTO> getPostsAdminPanel(int page, int size, String language) {
+        Pageable pageable = PageRequest.of(page, size).withSort(Sort.by(Post_.CREATED_AT).descending());
+
+        Page<Post> posts = postRepository.findAll(pageable);
+
+        return PageDTO.<AdminPostDTO>builder()
+                .data(posts.get().map(p -> postConverter.entityToDTO(p, language)).collect(toList()))
+                .page(page)
+                .size(size)
+                .totalResults((int) posts.getTotalElements())
+                .totalPages(posts.getTotalPages())
+                .actualResult(posts.getNumberOfElements())
+                .build();
     }
 }

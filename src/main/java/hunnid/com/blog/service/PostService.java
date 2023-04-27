@@ -2,10 +2,7 @@ package hunnid.com.blog.service;
 
 import hunnid.com.blog.dto.request.CreatePostDTO;
 import hunnid.com.blog.dto.request.HideOrShowRequestDTO;
-import hunnid.com.blog.dto.response.PageDTO;
-import hunnid.com.blog.dto.response.PostResponseDTO;
-import hunnid.com.blog.dto.response.SavedPostResponseDTO;
-import hunnid.com.blog.dto.response.TranslationStringTypeResponseDTO;
+import hunnid.com.blog.dto.response.*;
 import hunnid.com.blog.entity.Post;
 import hunnid.com.blog.entity.TranslationStringType;
 
@@ -24,4 +21,6 @@ public interface PostService {
     PageDTO<PostResponseDTO> postsHomePage(int page , int size , String language, List<UUID> tagIds);
 
     List<TranslationStringTypeResponseDTO> getStringType();
+
+    PageDTO<AdminPostDTO> getPostsAdminPanel(int page , int size , String language);
 }
