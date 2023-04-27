@@ -22,7 +22,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/posts")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000/")
+@CrossOrigin(origins = "*")
 public class PostController {
     private static final org.slf4j.Logger log =
         org.slf4j.LoggerFactory.getLogger(PostController.class);

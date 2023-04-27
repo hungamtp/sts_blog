@@ -16,4 +16,7 @@ public class PostContent{
     private String translatedString;
     @NotBlank
     private UUID contentTypeId;
+    
+    private UUID languageId;
+
 }

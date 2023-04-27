@@ -43,6 +43,8 @@ public class PostServiceImpl implements PostService {
                 .coverImage(request.getCoverImage())
                 .hidden(true)
                 .build();
+        
+        request.mapContentByLanguageId();
 
         Set<TranslationString> translationStrings = new HashSet<>();
         newPost.setTranslatedStrings(translationStrings);
