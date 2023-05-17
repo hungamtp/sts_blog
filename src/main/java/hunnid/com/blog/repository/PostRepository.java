@@ -13,5 +13,5 @@ import java.util.UUID;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, UUID> {
-    Page<Post> findAllByHiddenFalseAndTags_IdIn(Pageable pageable ,List<UUID> tags);
+    Page<Post> findDistinctByHiddenFalseAndTags_IdIn(Pageable pageable ,List<UUID> tags);
 }

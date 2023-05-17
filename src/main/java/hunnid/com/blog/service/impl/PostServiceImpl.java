@@ -105,7 +105,7 @@ public class PostServiceImpl implements PostService {
     public PageDTO<PostResponseDTO> postsHomePage(int page, int size, String language, List<UUID> tagIds) {
         Pageable pageable = PageRequest.of(page, size).withSort(Sort.by(Post_.CREATED_AT).descending());
 
-        Page<Post> posts = postRepository.findAllByHiddenFalseAndTags_IdIn(pageable,Objects.isNull(tagIds) ? tagService.getTags().stream().map(TagDTO::getId).collect(toList()) : tagIds);
+        Page<Post> posts = postRepository.findDistinctByHiddenFalseAndTags_IdIn(pageable,Objects.isNull(tagIds) ? tagService.getTags().stream().map(TagDTO::getId).collect(toList()) : tagIds);
 
         return PageDTO.<PostResponseDTO>builder()
                 .data(posts.get().map(p -> PostResponseDTO.entityToDTO(p, language)).collect(toList()))
