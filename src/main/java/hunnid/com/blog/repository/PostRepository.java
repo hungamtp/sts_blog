@@ -1,6 +1,7 @@
 package hunnid.com.blog.repository;
 
 import hunnid.com.blog.entity.Post;
+import hunnid.com.blog.repository.custom.PostRepositoryCustom;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,6 +13,6 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface PostRepository extends JpaRepository<Post, UUID> {
+public interface PostRepository extends JpaRepository<Post, UUID> , PostRepositoryCustom {
     Page<Post> findDistinctByHiddenFalseAndTags_IdIn(Pageable pageable ,List<UUID> tags);
 }

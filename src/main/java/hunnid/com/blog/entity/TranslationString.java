@@ -5,12 +5,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
+import org.apache.lucene.analysis.miscellaneous.ASCIIFoldingFilterFactory;
+import org.apache.lucene.analysis.snowball.SnowballPorterFilterFactory;
+import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
+import org.hibernate.search.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.Index;
 import java.util.UUID;
 
 @Entity
@@ -32,6 +36,13 @@ import java.util.UUID;
         }
 )
 @Indexed
+@AnalyzerDef(name = "titleAnalyzer",
+        tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
+        filters = {
+                @TokenFilterDef(factory = LowerCaseFilterFactory.class),
+                @TokenFilterDef(factory = ASCIIFoldingFilterFactory.class),
+                @TokenFilterDef(factory = SnowballPorterFilterFactory.class)
+        })
 public class TranslationString {
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -40,8 +51,10 @@ public class TranslationString {
     @Type(type = "uuid-char")
     private UUID id;
     
-    @FullTextField
+
     @Type(type="text")
+    @Field(index= org.hibernate.search.annotations.Index.YES, store=Store.NO)
+    @Analyzer(definition = "titleAnalyzer")
     private String translatedString;
 
     @ManyToOne(fetch = FetchType.LAZY)
