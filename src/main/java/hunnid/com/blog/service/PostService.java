@@ -23,4 +23,6 @@ public interface PostService {
     List<TranslationStringTypeResponseDTO> getStringType();
 
     PageDTO<AdminPostDTO> getPostsAdminPanel(int page , int size , String language);
+
+    PostDetailDTO getPostDetail(UUID postId, String language);
 }

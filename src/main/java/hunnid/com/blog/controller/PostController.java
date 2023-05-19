@@ -56,9 +56,10 @@ public class PostController {
                                    @RequestParam(required = false) List<UUID> tagIds) {
         return ResponseEntity.ok().body(postService.postsHomePage(page, size, language,tagIds));
     }
+
     @GetMapping("/{postId}")
-    public ResponseEntity getPostDetail(@PathVariable UUID postId){
-        return ResponseEntity.ok().body("postService.postsHomePage(page, size, languageId)");
+    public ResponseEntity getPostDetail(@PathVariable UUID postId, @RequestParam String language) {
+        return ResponseEntity.ok().body(postService.getPostDetail(postId, language));
     }
 
     @GetMapping("/content-type")

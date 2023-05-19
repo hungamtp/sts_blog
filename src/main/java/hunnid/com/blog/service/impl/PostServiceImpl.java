@@ -23,6 +23,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -139,5 +140,14 @@ public class PostServiceImpl implements PostService {
                 .totalPages(posts.getTotalPages())
                 .actualResult(posts.getNumberOfElements())
                 .build();
+    }
+
+    @Override
+    public PostDetailDTO getPostDetail(UUID postId, String language) {
+        Post post = postRepository.findByHiddenIsFalseAndId(postId).orElseThrow(
+                () -> new EntityNotFoundException()
+        );
+
+        return PostDetailDTO.entityToDTO(post, language);
     }
 }
