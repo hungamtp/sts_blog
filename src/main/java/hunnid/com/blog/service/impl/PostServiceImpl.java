@@ -150,4 +150,20 @@ public class PostServiceImpl implements PostService {
 
         return PostDetailDTO.entityToDTO(post, language);
     }
+
+    @Override
+    public PageDTO<PostResponseDTO> search(int page, int size, String language, String keyword) {
+        
+        List<Post> posts = postRepository.search(new ArrayList<>() , keyword,page,size);
+        Integer count = postRepository.searchCount(new ArrayList<>() , keyword,page,size);
+
+        return PageDTO.<PostResponseDTO>builder()
+                .data(posts.stream().map(p -> PostResponseDTO.entityToDTO(p, language)).collect(toList()))
+                .page(page)
+                .size(size)
+                .totalResults(count)
+                .totalPages(count % size == 0 ? count / size : count / size + 1)
+                .actualResult(posts.size())
+                .build();
+    }
 }

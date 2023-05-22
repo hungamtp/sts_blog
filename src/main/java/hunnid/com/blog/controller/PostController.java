@@ -73,4 +73,12 @@ public class PostController {
                                               @RequestParam String language) {
         return ResponseEntity.ok().body(postService.getPostsAdminPanel(page, size, language));
     }
+
+    @GetMapping("/search")
+    public ResponseEntity search(@RequestParam Integer page,
+                                 @RequestParam Integer size,
+                                 @RequestParam String language,
+                                 @RequestParam String keyword) {
+        return ResponseEntity.ok().body(postService.search(page, size, language, keyword));
+    }
 }

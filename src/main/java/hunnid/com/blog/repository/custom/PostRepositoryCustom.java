@@ -9,4 +9,5 @@ import java.util.UUID;
 
 public interface PostRepositoryCustom {
     List<Post> search(List<UUID> tags, String searchKeyWord, int page , int size);
+    Integer searchCount(List<UUID> tags, String searchKeyWord, int page , int size);
 }

@@ -25,4 +25,6 @@ public interface PostService {
     PageDTO<AdminPostDTO> getPostsAdminPanel(int page , int size , String language);
 
     PostDetailDTO getPostDetail(UUID postId, String language);
+
+    PageDTO<PostResponseDTO> search(int page , int size , String language,String keyword);
 }

@@ -59,4 +59,44 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom{
                 .setFirstResult(page * size)
                 .getResultList();
     }
+
+    @Override
+    public Integer searchCount(List<UUID> tags, String searchKeyWord, int page, int size) {
+        FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
+
+        QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory()
+                .buildQueryBuilder()
+                .forEntity(Post.class)
+                .get();
+        BooleanJunction finalQuery = queryBuilder.bool();
+        finalQuery.must(
+                queryBuilder.keyword()
+                        .onField(Post_.HIDDEN)
+                        .matching("false")
+                        .createQuery()
+        );
+
+        if (Strings.isNotBlank(searchKeyWord)) {
+            finalQuery.must(queryBuilder.keyword()
+                    .onField("translatedStrings.translatedString")
+                    .matching(searchKeyWord)
+                    .createQuery());
+        }
+
+        if (CollectionUtils.isNotEmpty(tags)) {
+            BooleanJunction creatorQueries = queryBuilder.bool();
+            for (var creatorId : tags) {
+                creatorQueries.should(queryBuilder
+                        .keyword()
+                        .onField("tags.id")
+                        .matching(creatorId)
+                        .createQuery());
+            }
+            finalQuery.must(creatorQueries.createQuery());
+        }
+
+
+        return fullTextEntityManager.createFullTextQuery(finalQuery.createQuery(), Post.class)
+                .getResultSize();
+    }
 }
