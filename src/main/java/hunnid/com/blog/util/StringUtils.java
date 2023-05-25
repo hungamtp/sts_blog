@@ -27,9 +27,9 @@ public class StringUtils {
             for (int i = 0; i < titleWord.length; i++) {
 
                 if (mapKeyword.containsKey(titleWord[i])) {
-                    resultBuilder.append(addTag(content, "b")).append(" ");
+                    resultBuilder.append(addTag(titleWord[i], "b")).append(" ");
                 } else {
-                    resultBuilder.append(titleWord[i]);
+                    resultBuilder.append(titleWord[i]).append(" ");
                 }
             }
             return resultBuilder.toString().trim();
