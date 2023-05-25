@@ -26,8 +26,8 @@ public class StringUtils {
             StringBuilder resultBuilder = new StringBuilder();
             for (int i = 0; i < titleWord.length; i++) {
 
-                if (mapKeyword.containsKey(titleWord[i])) {
-                    resultBuilder.append(addTag(titleWord[i], "b")).append(" ");
+                if (mapKeyword.containsKey(titleWord[i].toLowerCase())) {
+                    resultBuilder.append(addTag(addTag(addTag(titleWord[i], "b"), "i"), "u")).append(" ");
                 } else {
                     resultBuilder.append(titleWord[i]).append(" ");
                 }
@@ -35,7 +35,7 @@ public class StringUtils {
             return resultBuilder.toString().trim();
         } else {
             if (mapKeyword.containsKey(content.toLowerCase().trim()))
-                return addTag(content, "b");
+                return addTag(addTag(addTag(content, "b"), "i"), "u");
         }
         return content;
     }
