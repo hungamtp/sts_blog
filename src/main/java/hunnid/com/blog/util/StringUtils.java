@@ -7,7 +7,7 @@ import java.util.Map;
 public class StringUtils {
     public static String matchingKeyWord(String content, String keywords, Boolean isTitle) {
         // 15 word for title
-        String result = "";
+        content = content.trim();
         Map<String, Boolean> mapKeyword = new HashMap<>();
 
         if (keywords.contains(" ")) {
@@ -18,28 +18,29 @@ public class StringUtils {
                 }
             }
         } else {
-            mapKeyword.put(keywords, true);
+            mapKeyword.put(keywords.toLowerCase(), true);
         }
 
         if (content.contains(" ")) {
             String[] titleWord = content.split(" ");
-            for (var word : titleWord) {
-                if (mapKeyword.containsKey(word.toLowerCase())) {
-                    content = content.replace(word, addTag(content, "b"));
+            StringBuilder resultBuilder = new StringBuilder();
+            for (int i = 0; i < titleWord.length; i++) {
+
+                if (mapKeyword.containsKey(titleWord[i])) {
+                    resultBuilder.append(addTag(content, "b")).append(" ");
+                } else {
+                    resultBuilder.append(titleWord[i]);
                 }
             }
-
+            return resultBuilder.toString().trim();
         } else {
-            if (mapKeyword.containsKey(content))
+            if (mapKeyword.containsKey(content.toLowerCase().trim()))
                 return addTag(content, "b");
         }
-
-
         return content;
     }
 
     public static String addTag(String title, String tag) {
-        return new StringBuilder().append("<").append(tag).append(">").append(title).append("</").append(tag).toString();
+        return new StringBuilder().append("<").append(tag).append(">").append(title).append("</").append(tag).append(">").toString();
     }
-    
 }
