@@ -15,6 +15,7 @@ import hunnid.com.blog.service.LanguageService;
 import hunnid.com.blog.service.PostService;
 import hunnid.com.blog.service.TagService;
 import hunnid.com.blog.service.TranslationStringTypeService;
+import hunnid.com.blog.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -55,7 +56,7 @@ public class PostServiceImpl implements PostService {
             value.forEach((translationString) -> {
                 translationStrings.add(TranslationString.builder()
                         .language(entityManager.getReference(Language.class, key))
-                        .translatedString(translationString.getTranslatedString())
+                        .translatedString(StringUtils.encode(translationString.getTranslatedString()))
                         .type(entityManager.getReference(TranslationStringType.class, translationString.getContentTypeId()))
                         .build());
             });

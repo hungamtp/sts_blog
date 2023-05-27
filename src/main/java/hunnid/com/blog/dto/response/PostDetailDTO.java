@@ -3,6 +3,7 @@ package hunnid.com.blog.dto.response;
 import hunnid.com.blog.entity.Post;
 import hunnid.com.blog.entity.Tag;
 import hunnid.com.blog.enums.TranslationStringTypeEnum;
+import hunnid.com.blog.util.StringUtils;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -43,7 +44,7 @@ public class PostDetailDTO {
         return PostDetailDTO.builder()
                 .id(post.getId())
                 .title(title)
-                .content(content)
+                .content(StringUtils.encode(content))
                 .coverImage(post.getCoverImage())
                 .date(post.getCreatedAt().toLocalDate())
                 .viewCount(post.getViews().size())

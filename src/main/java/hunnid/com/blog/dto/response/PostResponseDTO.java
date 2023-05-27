@@ -40,12 +40,12 @@ public class PostResponseDTO {
         String content = null;
 
         if (titles.size() > 0) {
-            title = StringUtils.matchingKeyWord(titles.get(0), keyword, true);
+            title = StringUtils.matchingKeyWordTitle(titles.get(0), keyword);
         }
 
         // TODO: handle most appearance
         if (contents.size() > 0) {
-            content = contents.get(0);
+            content = StringUtils.matchingKeywordContent(contents.get(0), keyword);
         }
         
         return PostResponseDTO.builder()
