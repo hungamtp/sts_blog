@@ -42,8 +42,7 @@ public class PostResponseDTO {
         if (titles.size() > 0) {
             title = StringUtils.matchingKeyWordTitle(titles.get(0), keyword);
         }
-
-        // TODO: handle most appearance
+        
         if (contents.size() > 0) {
             content = StringUtils.matchingKeywordContent(contents.get(0), keyword);
         }

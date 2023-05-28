@@ -56,7 +56,7 @@ public class PostServiceImpl implements PostService {
             value.forEach((translationString) -> {
                 translationStrings.add(TranslationString.builder()
                         .language(entityManager.getReference(Language.class, key))
-                        .translatedString(StringUtils.encode(translationString.getTranslatedString()))
+                        .translatedString(translationString.getTranslatedString())
                         .type(entityManager.getReference(TranslationStringType.class, translationString.getContentTypeId()))
                         .build());
             });

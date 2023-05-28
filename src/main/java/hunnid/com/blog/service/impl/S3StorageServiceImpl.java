@@ -15,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,8 +31,6 @@ public class S3StorageServiceImpl implements StorageService {
     private String folderName;
     @Value("${region}")
     private String region;
-//    @Value("${s3.domain}")
-//    private String s3Domain;
 
     private AmazonS3 getS3Client() {
         AWSCredentials credentials = new BasicAWSCredentials(
@@ -52,7 +49,6 @@ public class S3StorageServiceImpl implements StorageService {
         String fileName = new StringBuilder()
                 .append(folderName)
                 .append("/")
-                .append(LocalDateTime.now())
                 .append(file.getOriginalFilename())
                 .toString();
         InputStream inputStream = new BufferedInputStream(file.getInputStream());

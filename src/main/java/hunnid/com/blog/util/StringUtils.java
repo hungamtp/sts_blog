@@ -1,8 +1,11 @@
 package hunnid.com.blog.util;
 
+import hunnid.com.blog.constraint.HtmlSpecialChar;
+
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class StringUtils {
@@ -45,7 +48,8 @@ public class StringUtils {
     public static String matchingKeywordContent(String content , String keywords){
         // pre-handle the unuseful keywords (ex : html tag and special characters)
         // find most appearance keywords in 20-words string;
-        content = content.trim();
+
+        content = removeHtmlTags(RegexUtil.HTML_TAG_REGEX, decodeSpecialChar(content.trim()));
         Map<String, Boolean> mapKeyword = new HashMap<>();
 
         if (keywords.contains(" ")) {
@@ -116,24 +120,11 @@ public class StringUtils {
                 result.append(words[i]).append(" ");
         }
         
-        return encode(result.toString().trim());
+        return result.toString().trim();
     }
 
     public static String addTag(String title, String tag) {
         return new StringBuilder().append("<").append(tag).append(">").append(title).append("</").append(tag).append(">").toString();
-    }
-
-    public static String avoidSpecialCharInStartOfString(String string){
-        if(string.length() == 0) return string;
-        string = encode(string);
-        Pattern pattern = Pattern.compile( "\s\\w+" );
-        StringBuilder builder = new StringBuilder();
-        for(int i = 0 ; i < string.length() ; i++){
-            if(pattern.matcher(String.valueOf(string.charAt(i))).matches() || string.charAt(i) == ' '){
-                builder.append(string.charAt(i));
-            }
-        }
-        return builder.toString();
     }
 
     public static String encode(String string) {
@@ -144,12 +135,20 @@ public class StringUtils {
         }
     }
 
-    public static void main(String[] args) throws UnsupportedEncodingException {
-        String s1 = "industry&amp;#x27;s";
-        byte[] bytes = s1.getBytes("UTF-8");
-        String s2 = new String(bytes, "UTF-8");
-        System.out.println(s2);
-        System.out.println(encode("industry&amp;#x27;s"));
+    public static String removeHtmlTags(List<String> regexes, String string) {
+        for(var regex : regexes){
+            Pattern pattern = Pattern.compile(regex);
+            string = pattern.matcher(string).replaceAll(" ");
+        }
+        return string;
     }
+    
+    private static String decodeSpecialChar(String string){
+        for(var specialChar : HtmlSpecialChar.ENCODED_CHAR.keySet()){
+            string = string.replaceAll(specialChar , HtmlSpecialChar.ENCODED_CHAR.get(specialChar));
+        }
+       return string;
+    }
+    
     
 }
