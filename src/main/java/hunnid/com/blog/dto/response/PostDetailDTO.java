@@ -44,7 +44,7 @@ public class PostDetailDTO {
         return PostDetailDTO.builder()
                 .id(post.getId())
                 .title(title)
-                .content(StringUtils.encode(content))
+                .content(StringUtils.decodeSpecialChar(content))
                 .coverImage(post.getCoverImage())
                 .date(post.getCreatedAt().toLocalDate())
                 .viewCount(post.getViews().size())

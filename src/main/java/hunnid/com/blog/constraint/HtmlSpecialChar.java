@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class HtmlSpecialChar {
     public static final Map<String ,String> ENCODED_CHAR = new HashMap<String, String>() {{
-        put("&quot;", "\"");
+        put("&amp;quot;", "\"");
         put("&gt;", ">");
         put("&lt;", "<");
         put("&amp;#x27;", "\'");

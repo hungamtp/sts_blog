@@ -143,7 +143,7 @@ public class StringUtils {
         return string;
     }
     
-    private static String decodeSpecialChar(String string){
+    public static String decodeSpecialChar(String string){
         for(var specialChar : HtmlSpecialChar.ENCODED_CHAR.keySet()){
             string = string.replaceAll(specialChar , HtmlSpecialChar.ENCODED_CHAR.get(specialChar));
         }
