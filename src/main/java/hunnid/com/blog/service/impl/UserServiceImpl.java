@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     @Override
-    public void processOAuthPostLogin(String username) {
-        User existUser = userRepository.findByName(username);
+    public boolean processOAuthPostLogin(String username) {
+        return userRepository.findByEmail(username).isPresent();
 
     }
 }

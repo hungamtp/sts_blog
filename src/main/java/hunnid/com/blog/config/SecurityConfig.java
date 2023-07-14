@@ -5,6 +5,7 @@ import hunnid.com.blog.service.impl.CustomOAuth2User;
 import hunnid.com.blog.service.impl.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 //import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 //import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
@@ -38,6 +40,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CustomOAuth2UserService oauthUserService;
     private final UserService userService;
 
+    @Value("fe.url")
+    private String feUrl;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
@@ -57,9 +62,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                         var user = authentication.getPrincipal();
 
-//                        userService.processOAuthPostLogin(user.getEmail());
+                        if (userService.processOAuthPostLogin(((DefaultOidcUser) user).getAttribute("email")))
+                            response.sendRedirect(feUrl + "admin");
+                        else
+                            response.sendRedirect(feUrl);
 
-                        response.sendRedirect("/home");
                     }
                 });
     }
