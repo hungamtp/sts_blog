@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Component
 public class PostConverter {
@@ -17,7 +18,7 @@ public class PostConverter {
         List<String> titles = post.getTranslatedStrings().stream()
                 .filter(t -> Objects.equals(t.getLanguage().getName(), language) && t.getType().getType().equals(TranslationStringTypeEnum.POST_TITLE))
                 .map(TranslationString::getTranslatedString)
-                .toList();
+                .collect(Collectors.toList());
 
         return AdminPostDTO.builder()
                 .id(post.getId())

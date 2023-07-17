@@ -31,11 +31,11 @@ public class PostResponseDTO {
         List<String> titles = post.getTranslatedStrings().stream()
                 .filter(t -> Objects.equals(t.getLanguage().getName(), language) && t.getType().getType().equals(TranslationStringTypeEnum.POST_TITLE))
                 .map(TranslationString::getTranslatedString)
-                .toList();
+                .collect(Collectors.toList());
         List<String> contents = post.getTranslatedStrings().stream()
                 .filter(t -> Objects.equals(t.getLanguage().getName(), language) && t.getType().getType().equals(TranslationStringTypeEnum.POST_CONTENT))
                 .map(TranslationString::getTranslatedString)
-                .toList();
+                .collect(Collectors.toList());
         String title = null;
         String content = null;
 
@@ -62,11 +62,11 @@ public class PostResponseDTO {
         List<String> titles = post.getTranslatedStrings().stream()
                 .filter(t -> Objects.equals(t.getLanguage().getName(), language) && t.getType().getType().equals(TranslationStringTypeEnum.POST_TITLE))
                 .map(TranslationString::getTranslatedString)
-                .toList();
+                .collect(Collectors.toList());
         List<String> contents = post.getTranslatedStrings().stream()
                 .filter(t -> Objects.equals(t.getLanguage().getName(), language) && t.getType().getType().equals(TranslationStringTypeEnum.POST_CONTENT))
                 .map(TranslationString::getTranslatedString)
-                .toList();
+                .collect(Collectors.toList());
         String title = null;
         String content = null;
 
