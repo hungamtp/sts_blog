@@ -27,17 +27,7 @@ public class PostController {
     private static final org.slf4j.Logger log =
         org.slf4j.LoggerFactory.getLogger(PostController.class);
     private final PostService postService;
-
-    @GetMapping("/hello")
-    @Operation(summary = "Get a foo by foo id")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "found the foo", content = {
-            @Content(mediaType = "application/json", schema = @Schema(implementation = Post.class))}),
-        @ApiResponse(responseCode = "400", description = "Invalid id supplied", content = @Content),
-        @ApiResponse(responseCode = "404", description = "Foo not found", content = @Content)})
-    public String demo() {
-        return "hello";
-    }
+    
 
     @PostMapping
     public ResponseEntity<SavedPostResponseDTO> createPost(@Valid @RequestBody CreatePostDTO request) {
