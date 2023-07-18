@@ -41,6 +41,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("POST", "PATCH", "/post").authenticated()
                 .antMatchers("/manage").authenticated()
+                .antMatchers("/tags").permitAll()
+                .antMatchers("/languages").permitAll()
                 .antMatchers("/**").permitAll()
                 .and()
                 .oauth2Login()
