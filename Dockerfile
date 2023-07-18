@@ -11,7 +11,6 @@ RUN mvn package -DskipTests
 FROM openjdk:17-slim
 
 WORKDIR /app
-
 COPY --from=builder /build/target/blog-0.0.1-SNAPSHOT.jar ./blog-api.jar
 
 EXPOSE 8089
