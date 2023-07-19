@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Store;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -17,6 +20,7 @@ import java.util.UUID;
 @Getter
 @SuperBuilder
 @Table(name = "language")
+@Indexed
 public class Language {
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -25,6 +29,7 @@ public class Language {
     @Type(type = "uuid-char")
     private UUID id;
     @Column(unique = true)
+    @Field(index= org.hibernate.search.annotations.Index.YES, store= Store.NO)
     private String name;
 
 }

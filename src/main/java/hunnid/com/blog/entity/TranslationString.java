@@ -59,6 +59,7 @@ public class TranslationString {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "language_id")
+    @IndexedEmbedded(includePaths = {"id"})
     private Language language;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "type_id")

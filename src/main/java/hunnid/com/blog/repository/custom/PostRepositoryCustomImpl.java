@@ -19,7 +19,7 @@ import java.util.UUID;
 public class PostRepositoryCustomImpl implements PostRepositoryCustom{
     private final EntityManager entityManager;
     @Override
-    public List<Post> search(List<UUID> tags, String searchKeyWord, int page , int size) {
+    public List<Post> search(List<UUID> tags, String searchKeyWord, int page , int size,String language) {
         FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
 
         QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory()
@@ -40,6 +40,11 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom{
                     .matching(searchKeyWord)
                     .createQuery());
         }
+
+        finalQuery.must(queryBuilder.keyword()
+                .onField("translatedStrings.language.name")
+                .matching(language)
+                .createQuery());
 
         if (CollectionUtils.isNotEmpty(tags)) {
             BooleanJunction creatorQueries = queryBuilder.bool();

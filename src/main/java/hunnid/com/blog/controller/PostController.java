@@ -9,8 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("/posts")
@@ -62,6 +64,29 @@ public class PostController {
                                  @RequestParam Integer size,
                                  @RequestParam String language,
                                  @RequestParam String keyword) {
-        return ResponseEntity.ok().body(postService.search(page, size, language, keyword));
+
+
+        return ResponseEntity.ok().body(postService.search(page, size, language, avoidSpecialCharInStartOfString(keyword)));
+    }
+
+    public static String avoidSpecialCharInStartOfString(String string){
+        if(string.length() == 0) return string;
+        string = encode(string);
+        Pattern pattern = Pattern.compile( "[A-Za-z0-9]+");
+        StringBuilder builder = new StringBuilder();
+        for(int i = 0 ; i < string.length() ; i++){
+            if(pattern.matcher(String.valueOf(string.charAt(i))).matches() || string.charAt(i) == ' '){
+                builder.append(string.charAt(i));
+            }
+        }
+        return builder.toString();
+    }
+
+    public static String encode(String string) {
+        try {
+            return java.net.URLDecoder.decode(string, StandardCharsets.UTF_8.name());
+        } catch (Exception exception) {
+            return string;
+        }
     }
 }

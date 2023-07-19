@@ -47,7 +47,7 @@ public class PostServiceImpl implements PostService {
                 .coverImage(request.getCoverImage())
                 .hidden(true)
                 .build();
-        
+
         request.mapContentByLanguageId();
 
         Set<TranslationString> translationStrings = new HashSet<>();
@@ -63,7 +63,7 @@ public class PostServiceImpl implements PostService {
         });
         List<Tag> tags = new ArrayList<>();
         request.getTagIds().forEach((value) -> {
-            tags.add(entityManager.getReference(Tag.class , value));
+            tags.add(entityManager.getReference(Tag.class, value));
         });
         newPost.setTags(tags.stream().collect(toSet()));
         postRepository.save(newPost);
@@ -107,7 +107,7 @@ public class PostServiceImpl implements PostService {
     public PageDTO<PostResponseDTO> postsHomePage(int page, int size, String language, List<UUID> tagIds) {
         Pageable pageable = PageRequest.of(page, size).withSort(Sort.by(Post_.CREATED_AT).descending());
 
-        Page<Post> posts = postRepository.findDistinctByHiddenFalseAndTags_IdIn(pageable,Objects.isNull(tagIds) ? tagService.getTags().stream().map(TagDTO::getId).collect(toList()) : tagIds);
+        Page<Post> posts = postRepository.findDistinctByHiddenFalseAndTags_IdIn(pageable, Objects.isNull(tagIds) ? tagService.getTags().stream().map(TagDTO::getId).collect(toList()) : tagIds);
 
         return PageDTO.<PostResponseDTO>builder()
                 .data(posts.get().map(p -> PostResponseDTO.entityToDTO(p, language)).collect(toList()))
@@ -155,7 +155,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public PageDTO<PostResponseDTO> search(int page, int size, String language, String keyword) {
 
-        List<Post> posts = postRepository.search(new ArrayList<>(), keyword, page, size);
+        List<Post> posts = postRepository.search(new ArrayList<>(), keyword, page, size, language);
         Integer count = postRepository.searchCount(new ArrayList<>(), keyword, page, size);
 
         return PageDTO.<PostResponseDTO>builder()

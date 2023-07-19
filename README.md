@@ -11,3 +11,5 @@ http://localhost:8089/api/v1/oauth2/authorization/google
 
 ## change tag before pushing images
 docker tag blog-api hungnguyenb/blog-api
+docker build -t blog-api .
+docker run -d --name=blog-api -p 8089:8089 blog-api

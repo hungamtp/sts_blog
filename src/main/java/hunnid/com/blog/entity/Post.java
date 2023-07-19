@@ -52,7 +52,7 @@ public class Post {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", referencedColumnName = "id")
-    @IndexedEmbedded(includePaths = {"translatedString"})
+    @IndexedEmbedded(includePaths = {"translatedString","language.name"})
     private Set<TranslationString> translatedStrings;
 
     @ManyToMany(cascade = CascadeType.PERSIST)

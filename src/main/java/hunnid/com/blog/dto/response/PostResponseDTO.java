@@ -36,6 +36,7 @@ public class PostResponseDTO {
                 .filter(t -> Objects.equals(t.getLanguage().getName(), language) && t.getType().getType().equals(TranslationStringTypeEnum.POST_CONTENT))
                 .map(TranslationString::getTranslatedString)
                 .collect(Collectors.toList());
+
         String title = null;
         String content = null;
 
