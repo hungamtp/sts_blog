@@ -9,6 +9,7 @@ import lombok.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -41,6 +42,7 @@ public class PostDetailDTO {
                     .filter(t -> t.getType().getType().equals(TranslationStringTypeEnum.POST_CONTENT)
                             && t.getLanguage().getName().equals(language)).collect(Collectors.toList()).get(0).getTranslatedString();
         }
+        
         return PostDetailDTO.builder()
                 .id(post.getId())
                 .title(title)
@@ -51,5 +53,7 @@ public class PostDetailDTO {
                 .tags(post.getTags().stream().map(Tag::getTag).collect(Collectors.toList()))
                 .build();
     }
+    
+    
 
 }

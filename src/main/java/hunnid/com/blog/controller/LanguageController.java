@@ -1,5 +1,6 @@
 package hunnid.com.blog.controller;
 
+import hunnid.com.blog.cusAnnotation.Log;
 import hunnid.com.blog.dto.response.LanguageDTO;
 import hunnid.com.blog.entity.Language;
 import hunnid.com.blog.repository.LanguageRepository;
@@ -25,4 +26,11 @@ public class LanguageController {
     public ResponseEntity<List<LanguageDTO>> getLanguages() {
         return ResponseEntity.ok().body(languageService.getLanguages());
     }
+    
+    @GetMapping("/aop")
+    public void AOP() {
+        languageService.testAOP();
+        return ;
+    }
+
 }

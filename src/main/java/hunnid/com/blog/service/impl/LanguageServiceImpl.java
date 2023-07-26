@@ -2,6 +2,7 @@ package hunnid.com.blog.service.impl;
 
 import hunnid.com.blog.constraint.EntityNameConstraint;
 import hunnid.com.blog.constraint.ErrorMessageConstraint;
+import hunnid.com.blog.cusAnnotation.Log;
 import hunnid.com.blog.dto.response.LanguageDTO;
 import hunnid.com.blog.entity.Language;
 import hunnid.com.blog.exceptionHandler.exception.NotFoundException;
@@ -36,5 +37,11 @@ public class LanguageServiceImpl implements LanguageService {
         return languageRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(EntityNameConstraint.LANGUAGE, String.format(ErrorMessageConstraint.NOT_FOUND, id)));
 
+    }
+
+    @Log
+    @Override
+    public void testAOP() {
+        System.out.println("testAOP");
     }
 }
