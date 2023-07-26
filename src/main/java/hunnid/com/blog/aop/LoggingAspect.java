@@ -1,5 +1,6 @@
 package hunnid.com.blog.aop;
 
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
@@ -13,10 +14,16 @@ public class LoggingAspect {
     public void logPointcut(){
     }
 
-    @Before("logPointcut()")
-    public void logAllMethodCallsAdvice(){
+    @After("logPointcut()")
+    public void afterLogAllMethodCallsAdvice(){
         System.out.println("In Aspect");
     }
+
+    @Before("logPointcut()")
+    public void beforeLogAllMethodCallsAdvice(){
+        System.out.println("Before Aspect");
+    }
+    
     
     //https://www.baeldung.com/spring-aop-pointcut-tutorial
 }
